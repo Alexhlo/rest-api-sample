@@ -113,7 +113,7 @@ services:
       - postgres
 ```
 - Create file - **psql-test-db-create.sql** (init test DB)
-```sql
+```postgresql
 CREATE DATABASE university_test
     WITH
         OWNER = testuser

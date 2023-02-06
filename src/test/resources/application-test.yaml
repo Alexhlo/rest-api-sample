@@ -1,0 +1,18 @@
+"spring": {
+  "jpa": {
+    "hibernate": {
+      "ddl-auto": "update",
+      "dialect": "org.hibernate.dialect.PostgreSQLDialect"
+    }
+  },
+  "datasource": {
+    "url": "jdbc:postgresql://localhost:5432/university_test",
+    "hikari": {
+      "maximumPoolSize": 2,
+      "connectionTestQuery": "SELECT 1",
+      "maxLifetime": 180000
+    },
+    "username": "postgres",
+    "password": "123"
+  }
+}

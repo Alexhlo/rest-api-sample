@@ -1,7 +1,7 @@
 package alex.hlo.springboot.test.deserializer;
 
-import alex.hlo.springboot.test.exception.StudentException;
-import alex.hlo.springboot.test.model.Gender;
+import alex.hlo.springboot.test.exception.StudentServiceException;
+import alex.hlo.springboot.test.model.enums.Gender;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
@@ -40,6 +40,6 @@ public class GenderDeserializer extends StdDeserializer<Gender> {
             }
         }
 
-        throw new StudentException("Unexpected gender field value! Expected: " + Arrays.toString(Gender.values()));
+        throw new StudentServiceException("Unexpected gender field value! Expected: " + Arrays.toString(Gender.values()));
     }
 }

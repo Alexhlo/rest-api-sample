@@ -1,4 +1,4 @@
-package alex.hlo.springboot.test.model;
+package alex.hlo.springboot.test.model.enums;
 
 import alex.hlo.springboot.test.deserializer.GenderDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

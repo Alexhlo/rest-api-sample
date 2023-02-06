@@ -5,10 +5,11 @@
 
     <groupId>alex.hlo</groupId>
     <artifactId>spring-boot-test</artifactId>
+    <name>spring-boot-test</name>
     <version>1.0.0</version>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
@@ -17,12 +18,10 @@
         <lombok.version>1.18.24</lombok.version>
         <spring-boot.version>2.5.10</spring-boot.version>
         <postgresql.version>42.5.1</postgresql.version>
+        <jaxb-api.version>2.1</jaxb-api.version>
 
         <!-- specification dependencies -->
         <swagger.version>3.0.0</swagger.version>
-
-        <!-- test dependencies -->
-        <junit.version>5.9.2</junit.version>
     </properties>
 
     <dependencies>
@@ -62,7 +61,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.1</version>
+            <version>${jaxb-api.version}</version>
         </dependency>
 
         <!-- specification dependencies -->
@@ -74,18 +73,25 @@
 
         <!-- test dependencies -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${spring-boot.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.xmlunit</groupId>
+                    <artifactId>xmlunit-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
     </dependencies>
 
     <build>

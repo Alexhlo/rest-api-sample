@@ -1,8 +1,8 @@
 package alex.hlo.springboot.test.exception;
 
-public class StudentException extends RuntimeException {
+public class StudentServiceException extends StudentApiException {
 
-    public StudentException(String message) {
+    public StudentServiceException(String message) {
         super(message);
     }
 }

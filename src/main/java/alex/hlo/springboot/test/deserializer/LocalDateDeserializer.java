@@ -1,6 +1,6 @@
 package alex.hlo.springboot.test.deserializer;
 
-import alex.hlo.springboot.test.exception.StudentException;
+import alex.hlo.springboot.test.exception.StudentServiceException;
 import alex.hlo.springboot.test.utils.DateUtil;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -37,10 +37,10 @@ public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
 
         if (Objects.nonNull(node)) {
             try {
-                return DateUtil.parseDate(node.textValue());
+                return DateUtil.stringToLocalDate(node.textValue());
             } catch (DateTimeParseException ignored) { }
         }
 
-        throw new StudentException("Input date must be in pattern: yyyy-MM-dd");
+        throw new StudentServiceException("Input date must be in pattern: yyyy-MM-dd");
     }
 }

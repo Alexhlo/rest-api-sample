@@ -1,5 +1,6 @@
 package alex.hlo.springboot.test.entity;
 
+import alex.hlo.springboot.test.model.enums.SubjectGrade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,11 @@ public class Subject {
     @Column(name="subject_name", length=50, nullable=false)
     private String name;
 
-    @Column(name="subject_grade", length=2, nullable=false)
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private SubjectGrade grade;
 
+    public Subject(String name, SubjectGrade grade) {
+        this.name = name;
+        this.grade = grade;
+    }
 }

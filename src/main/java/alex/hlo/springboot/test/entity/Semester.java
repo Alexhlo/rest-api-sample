@@ -24,4 +24,9 @@ public class Semester {
 
     @Column(name = "semester_accepted", nullable = false)
     private Boolean accepted;
+
+    public Semester(Integer count, Boolean accepted) {
+        this.count = count;
+        this.accepted = accepted;
+    }
 }

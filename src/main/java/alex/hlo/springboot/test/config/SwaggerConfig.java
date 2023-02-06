@@ -27,7 +27,7 @@ public class SwaggerConfig {
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Boot 2.0 test RESTful API")
+                .title("Spring Boot 2 test RESTful API")
                 .description("API using PostgreSQL")
                 .version("1.0.0")
                 .build();

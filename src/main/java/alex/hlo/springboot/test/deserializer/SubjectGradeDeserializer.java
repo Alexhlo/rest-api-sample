@@ -1,7 +1,7 @@
 package alex.hlo.springboot.test.deserializer;
 
-import alex.hlo.springboot.test.exception.StudentException;
-import alex.hlo.springboot.test.model.enums.Gender;
+import alex.hlo.springboot.test.exception.StudentServiceException;
+import alex.hlo.springboot.test.model.enums.SubjectGrade;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
@@ -12,34 +12,34 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class GenderDeserializer extends StdDeserializer<Gender> {
+public class SubjectGradeDeserializer extends StdDeserializer<SubjectGrade> {
 
-    public GenderDeserializer() {
-        super(GenderDeserializer.class);
+    public SubjectGradeDeserializer() {
+        super(SubjectGradeDeserializer.class);
     }
 
-    protected GenderDeserializer(Class<?> vc) {
+    protected SubjectGradeDeserializer(Class<?> vc) {
         super(vc);
     }
 
-    protected GenderDeserializer(JavaType valueType) {
+    protected SubjectGradeDeserializer(JavaType valueType) {
         super(valueType);
     }
 
-    protected GenderDeserializer(StdDeserializer<?> src) {
+    protected SubjectGradeDeserializer(StdDeserializer<?> src) {
         super(src);
     }
 
     @Override
-    public Gender deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public SubjectGrade deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
-        for (Gender gender : Gender.values()) {
-            if (gender.name().equalsIgnoreCase(node.textValue())) {
-                return Gender.valueOf(node.textValue().toUpperCase(Locale.ROOT));
+        for (SubjectGrade grade : SubjectGrade.values()) {
+            if (grade.name().equalsIgnoreCase(node.textValue())) {
+                return SubjectGrade.valueOf(node.textValue().toUpperCase(Locale.ROOT));
             }
         }
 
-        throw new StudentException("Unexpected gender field value! Expected: " + Arrays.toString(Gender.values()));
+        throw new StudentServiceException("Unexpected subject grade field value! Expected: " + Arrays.toString(SubjectGrade.values()));
     }
 }

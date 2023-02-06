@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 
 public final class DateUtil {
 
-    private static final String ISO_1084_PATTERN = "yyyy-MM-dd";
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern(ISO_1084_PATTERN).withZone(ZoneId.systemDefault());
+    private static final String ISO_8601_PATTERN = "yyyy-MM-dd";
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern(ISO_8601_PATTERN).withZone(ZoneId.systemDefault());
 
     private DateUtil() {}
 
@@ -19,16 +19,10 @@ public final class DateUtil {
         return date.format(DTF);
     }
 
-    public static LocalDate parseDate(String date) {
+    public static LocalDate stringToLocalDate(String date) {
         if (ObjectUtils.isEmpty(date)) return null;
 
         return LocalDate.parse(date, DTF);
-    }
-
-    public static String parseStringDate(String date) {
-        if (ObjectUtils.isEmpty(date)) return null;
-
-        return localDateToString(parseDate(date));
     }
 
     public static int getAgeFromDate(LocalDate date) {

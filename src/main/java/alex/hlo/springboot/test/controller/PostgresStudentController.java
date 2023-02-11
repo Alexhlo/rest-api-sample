@@ -1,26 +1,17 @@
 package alex.hlo.springboot.test.controller;
 
 import alex.hlo.springboot.test.entity.Student;
-import alex.hlo.springboot.test.exception.StudentApiException;
-import alex.hlo.springboot.test.exception.StudentNotFoundException;
-import alex.hlo.springboot.test.exception.StudentServiceException;
-import alex.hlo.springboot.test.model.ErrorMessage;
 import alex.hlo.springboot.test.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
-import java.util.Date;
 import java.util.List;
 
-import static alex.hlo.springboot.test.model.ErrorMessage.initErrorMessage;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @Api(tags = { "Student API" })
@@ -79,20 +70,6 @@ public class PostgresStudentController {
     @ApiOperation(value = "Delete student by id")
     public void deleteStudent(@PathVariable String id) {
         studentService.deleteStudentById(id);
-    }
-
-    @ExceptionHandler(StudentNotFoundException.class)
-    public ResponseEntity<Object> handleStudentNotFoundException(WebRequest webRequest, StudentNotFoundException exception) {
-        return ResponseEntity
-                .status(NOT_FOUND)
-                .body(initErrorMessage(webRequest, NOT_FOUND, exception.getMessage()));
-    }
-
-    @ExceptionHandler(value = { StudentApiException.class, StudentServiceException.class })
-    public ResponseEntity<Object> handleExceptionException(WebRequest webRequest, StudentApiException exception) {
-        return ResponseEntity
-                .status(BAD_REQUEST)
-                .body(initErrorMessage(webRequest, BAD_REQUEST, exception.getMessage()));
     }
 
 }

@@ -1,7 +1,9 @@
 package alex.hlo.springboot.test.service.impl;
 
 
+import alex.hlo.springboot.test.entity.Semester;
 import alex.hlo.springboot.test.entity.Student;
+import alex.hlo.springboot.test.entity.Subject;
 import alex.hlo.springboot.test.exception.StudentApiException;
 import alex.hlo.springboot.test.exception.StudentNotFoundException;
 import alex.hlo.springboot.test.exception.StudentServiceException;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -140,6 +143,35 @@ public class StudentServiceImpl implements StudentService {
 
         if (emptyFields.size() != 0) {
             throw new StudentApiException("Student has no required fields: " + emptyFields);
+        }
+
+        validateSemesters(student.getSemesters());
+        validateSubjects(student.getSubjects());
+    }
+
+    private void validateSemesters(Set<Semester> semesters) {
+        if (ObjectUtils.isEmpty(semesters)) {
+            throw new StudentApiException("Student has no semesters!");
+        }
+
+        boolean isNullRequiredFields = semesters.stream()
+                .anyMatch(semester -> isEmpty(semester.getAccepted()) || isEmpty(semester.getCount()));
+
+        if (isNullRequiredFields) {
+            throw new StudentApiException("Semester must contains fields: [accepted, count]");
+        }
+    }
+
+    private void validateSubjects(Set<Subject> subjects) {
+        if (ObjectUtils.isEmpty(subjects)) {
+            throw new StudentApiException("Student has no subjects!");
+        }
+
+        boolean isNullRequiredFields = subjects.stream()
+                .anyMatch(subject -> isEmpty(subject.getGrade()) || isEmpty(subject.getName()));
+
+        if (isNullRequiredFields) {
+            throw new StudentApiException("Subject must contains fields: [grade, name]");
         }
     }
 

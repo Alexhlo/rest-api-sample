@@ -2,9 +2,9 @@
   "spring": {
     "jpa": {
       "hibernate": {
-        "ddl-auto": "create-drop",
-        "dialect": "org.hibernate.dialect.PostgreSQLDialect"
-      }
+        "ddl-auto": "create-drop"
+      },
+      "database-platform": "org.hibernate.dialect.PostgreSQLDialect"
     },
     "datasource": {
       "url": "jdbc:postgresql://localhost:5432/university_test",

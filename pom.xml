@@ -20,6 +20,9 @@
         <postgresql.version>42.5.1</postgresql.version>
         <jaxb-api.version>2.1</jaxb-api.version>
 
+        <!-- metrics -->
+        <prometheus.version>1.10.3</prometheus.version>
+
         <!-- specification dependencies -->
         <swagger.version>3.0.0</swagger.version>
     </properties>
@@ -71,6 +74,14 @@
             <version>${swagger.version}</version>
         </dependency>
 
+        <!-- metrics -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.10.3</version>
+        </dependency>
+
+
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -95,6 +106,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -108,6 +120,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

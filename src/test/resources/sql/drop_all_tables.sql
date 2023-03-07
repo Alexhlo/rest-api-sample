@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS "subjects";
+DROP TABLE IF EXISTS "semesters";
+DROP TABLE IF EXISTS "students" CASCADE;
+DROP SEQUENCE IF EXISTS "hibernate_sequence" CASCADE;

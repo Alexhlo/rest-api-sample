@@ -7,15 +7,15 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static alex.hlo.springboot.test.utils.StudentUtil.generateSimpleStudentModel;
+import static alex.hlo.springboot.test.utils.TestStudentUtil.generateSimpleStudentModel;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Disabled("Need DB connections")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PostgresStudentsControllerTest {
 
@@ -67,11 +67,15 @@ public class PostgresStudentsControllerTest {
     }
 
     @Test
-    @Disabled("Optional test, too much resources use")
+    @Order(5)
     void getAllStudentsTest() {
         List<Student> allStudents = studentService.getAllStudents();
 
         Assertions.assertTrue(allStudents.size() > 0);
     }
 
+    @Test
+    @Order(6)
+    @Sql(scripts = "/sql/drop_all_tables.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void dropDbTablesTest() { }
 }

@@ -3,7 +3,7 @@ package alex.hlo.springboot.test.postgres;
 import alex.hlo.springboot.test.entity.Student;
 import alex.hlo.springboot.test.exception.StudentNotFoundException;
 import alex.hlo.springboot.test.service.StudentService;
-import alex.hlo.springboot.test.utils.StudentUtil;
+import alex.hlo.springboot.test.utils.TestStudentUtil;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
@@ -21,7 +21,7 @@ public class MockedPostgresStudentControllerTest {
     public static void initMocks() {
         studentService = Mockito.mock(StudentService.class);
 
-        generatedStudent = StudentUtil.generateSimpleStudentModel(0);
+        generatedStudent = TestStudentUtil.generateSimpleStudentModel(0);
         generatedStudent.setId(STUDENT_ID);
 
         List<Student> generatedStudentList = List.of(generatedStudent);

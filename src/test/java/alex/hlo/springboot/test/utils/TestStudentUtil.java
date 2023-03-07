@@ -11,9 +11,9 @@ import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
-public final class StudentUtil {
+public final class TestStudentUtil {
 
-    private StudentUtil() {}
+    private TestStudentUtil() {}
 
     public static Student generateSimpleStudentModel(long number) {
         return new Student(

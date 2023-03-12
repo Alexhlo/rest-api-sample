@@ -18,18 +18,6 @@ public class GenderDeserializer extends StdDeserializer<Gender> {
         super(GenderDeserializer.class);
     }
 
-    protected GenderDeserializer(Class<?> vc) {
-        super(vc);
-    }
-
-    protected GenderDeserializer(JavaType valueType) {
-        super(valueType);
-    }
-
-    protected GenderDeserializer(StdDeserializer<?> src) {
-        super(src);
-    }
-
     @Override
     public Gender deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);

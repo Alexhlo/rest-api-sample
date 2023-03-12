@@ -18,18 +18,6 @@ public class SubjectGradeDeserializer extends StdDeserializer<SubjectGrade> {
         super(SubjectGradeDeserializer.class);
     }
 
-    protected SubjectGradeDeserializer(Class<?> vc) {
-        super(vc);
-    }
-
-    protected SubjectGradeDeserializer(JavaType valueType) {
-        super(valueType);
-    }
-
-    protected SubjectGradeDeserializer(StdDeserializer<?> src) {
-        super(src);
-    }
-
     @Override
     public SubjectGrade deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);

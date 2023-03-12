@@ -16,37 +16,46 @@
 
         <!-- project dependencies -->
         <lombok.version>1.18.24</lombok.version>
-        <spring-boot.version>2.5.10</spring-boot.version>
+        <spring-boot.version>2.6.14</spring-boot.version>
         <postgresql.version>42.5.1</postgresql.version>
         <jaxb-api.version>2.1</jaxb-api.version>
+        <spring-sleuth.version>3.1.7</spring-sleuth.version>
 
         <!-- metrics -->
-        <prometheus.version>1.10.3</prometheus.version>
+        <prometheus.version>1.10.4</prometheus.version>
 
         <!-- specification dependencies -->
-        <swagger.version>3.0.0</swagger.version>
+        <springdoc-openapi-ui.version>1.6.15</springdoc-openapi-ui.version>
     </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.14</version>
+        <relativePath/>
+    </parent>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <version>${spring-sleuth.version}</version>
         </dependency>
 
         <!-- project dependencies -->
@@ -69,24 +78,22 @@
 
         <!-- specification dependencies -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${swagger.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc-openapi-ui.version}</version>
         </dependency>
 
         <!-- metrics -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.10.3</version>
+            <version>${prometheus.version}</version>
         </dependency>
-
 
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot.version}</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>

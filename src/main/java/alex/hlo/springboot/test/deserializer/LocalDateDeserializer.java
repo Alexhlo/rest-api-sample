@@ -19,18 +19,6 @@ public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
         super(LocalDateDeserializer.class);
     }
 
-    protected LocalDateDeserializer(Class<?> vc) {
-        super(vc);
-    }
-
-    protected LocalDateDeserializer(JavaType valueType) {
-        super(valueType);
-    }
-
-    protected LocalDateDeserializer(StdDeserializer<?> src) {
-        super(src);
-    }
-
     @Override
     public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);

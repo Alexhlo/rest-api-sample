@@ -6,13 +6,14 @@ Provides basic methods to work with Student service.
 - Spring framework 5
 - Spring-boot 2
 - Project Lombok
-- Swagger
+- Swagger (springdoc-openapi)
 - PostgreSQL
 - Docker-compose
 - Junit-jupiter
 - Mockito
 - Prometheus
 - Grafana
+- Spring-sleuth
 
 ### HttpMethods
 ##### Students controller (/postgres):
@@ -45,12 +46,16 @@ postgres
 ```json
 {
   "spring": {
+    "application": {
+      "name": "postgres-student-api"
+    },
     "jpa": {
       "hibernate": {
         "ddl-auto": "update"
       },
       "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-      "show-sql": false
+      "show-sql": false,
+      "open-in-view": false
     },
     "datasource": {
       "url": "jdbc:postgresql://localhost:5432/university",
@@ -61,6 +66,11 @@ postgres
       },
       "username": "postgres",
       "password": "123"
+    }
+  },
+  "springdoc": {
+    "swagger-ui": {
+      "disable-swagger-default-url": false
     }
   },
   "management": {

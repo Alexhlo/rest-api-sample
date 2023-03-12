@@ -1,11 +1,15 @@
 {
   "spring": {
+    "application": {
+      "name": "postgres-student-api"
+    },
     "jpa": {
       "hibernate": {
         "ddl-auto": "update"
       },
       "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-      "show-sql": false
+      "show-sql": false,
+      "open-in-view": false
     },
     "datasource": {
       "url": "jdbc:postgresql://localhost:5432/university",
@@ -16,6 +20,11 @@
       },
       "username": "postgres",
       "password": "123"
+    }
+  },
+  "springdoc": {
+    "swagger-ui": {
+      "disable-swagger-default-url": false
     }
   },
   "management": {

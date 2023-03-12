@@ -5,8 +5,7 @@ import alex.hlo.springboot.test.deserializer.LocalDateDeserializer;
 import alex.hlo.springboot.test.generator.StudentIdGenerator;
 import alex.hlo.springboot.test.model.enums.Gender;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,49 +15,51 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "students")
-@ApiModel(value = "Student", description = "Student subject list")
+@Schema(name = "Student", description = "Student subject list")
 public class Student {
 
     @Id
     @GeneratedValue(generator = StudentIdGenerator.NAME)
     @Column(name = "student_id", nullable = false, unique = true)
-    @ApiModelProperty(name = "Student id", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+    @Schema(description = "Student id", accessMode = READ_ONLY)
     @GenericGenerator(name = StudentIdGenerator.NAME, strategy = "alex.hlo.springboot.test.generator.StudentIdGenerator")
     private String id;
 
     @Column(nullable = false)
-    @ApiModelProperty(name = "Student first name")
+    @Schema(description = "Student first name")
     private String firstName;
 
     @Column(nullable = false)
-    @ApiModelProperty(name = "Student last name")
+    @Schema(description = "Student last name")
     private String lastName;
 
-    @ApiModelProperty(name = "Student middle name")
+    @Schema(description = "Student middle name")
     private String middleName;
 
     @Enumerated(EnumType.STRING)
     @JsonDeserialize(using = GenderDeserializer.class)
-    @ApiModelProperty(name = "Student gender", example = "male, female")
+    @Schema(description = "Student gender", example = "male, female")
     private Gender gender;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @ApiModelProperty(name = "Student birthDate", example = "1990-10-10")
+    @Schema(description = "Student birthDate", example = "1990-10-10")
     private LocalDate birthDate;
 
-    @ApiModelProperty(name = "Student age")
+    @Schema(description = "Student age")
     private Integer age;
 
-    @ApiModelProperty(name = "Student subject list")
+    @Schema(description = "Student subject list")
     @JoinColumn(name = "student_id", referencedColumnName = "student_id")
     @OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Subject> subjects;
 
-    @ApiModelProperty(name = "Student semester list")
+    @Schema(description = "Student semester list")
     @JoinColumn(name = "student_id", referencedColumnName = "student_id")
     @OneToMany(targetEntity = Semester.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Semester> semesters;

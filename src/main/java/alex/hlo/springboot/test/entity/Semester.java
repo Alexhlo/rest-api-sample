@@ -1,7 +1,6 @@
 package alex.hlo.springboot.test.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,25 +8,27 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "semesters")
-@ApiModel(value = "Semester", description = "Student semester list")
+@Schema(name = "Semester", description = "Student semester list")
 public class Semester {
 
     @Id
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "semester_id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @ApiModelProperty(name = "Semester id", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+    @Schema(description = "Semester id", accessMode = READ_ONLY)
     private String id;
 
-    @ApiModelProperty(name = "Semester count")
+    @Schema(description = "Semester count")
     @Column(name = "semester_count", nullable = false)
     private Integer count;
 
-    @ApiModelProperty(name = "Semester complete")
+    @Schema(description = "Semester complete")
     @Column(name = "semester_accepted", nullable = false)
     private Boolean accepted;
 

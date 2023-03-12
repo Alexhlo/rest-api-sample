@@ -1,6 +1,6 @@
 package alex.hlo.springboot.test.generator;
 
-import net.bytebuddy.utility.RandomString;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
@@ -15,6 +15,6 @@ public class StudentIdGenerator implements IdentifierGenerator {
     public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object object)
             throws HibernateException {
 
-        return new RandomString(8).nextString();
+        return RandomStringUtils.random(8);
     }
 }

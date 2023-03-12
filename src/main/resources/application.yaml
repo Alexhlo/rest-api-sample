@@ -1,5 +1,8 @@
 {
   "spring": {
+    "application": {
+      "name": "test-service"
+    },
     "jpa": {
       "hibernate": {
         "ddl-auto": "update"

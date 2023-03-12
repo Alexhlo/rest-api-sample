@@ -1,33 +1,33 @@
 package alex.hlo.springboot.test.entity;
 
 import alex.hlo.springboot.test.model.enums.SubjectGrade;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "subjects")
-@ApiModel(value = "Subject", description = "Student subject list")
+@Schema(name = "Subject", description = "Student subject list")
 public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "subject_id", nullable = false, unique = true)
-    @ApiModelProperty(name = "Subject id", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+    @Schema(description = "Subject id", accessMode = READ_ONLY)
     private long id;
 
-    @ApiModelProperty(name = "Subject name")
+    @Schema(description = "Subject name")
     @Column(name="subject_name", length=50, nullable=false)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @ApiModelProperty(name = "Subject grade", example = "A, B, C")
+    @Schema(description = "Subject grade", example = "A, B, C")
     private SubjectGrade grade;
 
     public Subject(String name, SubjectGrade grade) {

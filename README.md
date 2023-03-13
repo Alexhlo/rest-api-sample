@@ -245,16 +245,19 @@ ENTRYPOINT ["java", "-jar", "/service.jar"]
 ```yaml
 {
   "spring": {
+    "application": {
+      "name": "postgres-student-api"
+    },
     "jpa": {
       "hibernate": {
-        # need to create and drop entities tables
-        "ddl-auto": "create-drop"
+        "ddl-auto": "update"
       },
-      "database-platform": "org.hibernate.dialect.PostgreSQLDialect"
+      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
+      "show-sql": true,
+      "open-in-view": false
     },
     "datasource": {
-      # connect to test DB
-      "url": "jdbc:postgresql://localhost:5432/university_test", 
+      "url": "jdbc:postgresql://localhost:5432/university_test",
       "hikari": {
         "maximumPoolSize": 2,
         "connectionTestQuery": "SELECT 1",
@@ -268,7 +271,7 @@ ENTRYPOINT ["java", "-jar", "/service.jar"]
 ```
 
 ### Start test classes:
-- [ApplicationContextBootTest.java](src/test/java/alex/hlo/springboot/test/ApplicationContextBootTest.java)
-- [PostgresStudentsControllerTest.java](src/test/java/alex/hlo/springboot/test/PostgresStudentsControllerTest.java)
+- [ApplicationContextBootTest.java](src/test/java/alex/hlo/springboot/test/postgres/PostgresStudentsControllerTest.java)
+- [PostgresStudentsControllerTest.java](src/test/java/alex/hlo/springboot/test/SpringBootApplicationContextTest.java)
 
 

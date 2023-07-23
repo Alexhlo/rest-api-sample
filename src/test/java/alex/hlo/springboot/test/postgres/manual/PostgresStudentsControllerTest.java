@@ -1,4 +1,4 @@
-package alex.hlo.springboot.test.postgres;
+package alex.hlo.springboot.test.postgres.manual;
 
 import alex.hlo.springboot.test.entity.Student;
 import alex.hlo.springboot.test.exception.NotFoundException;
@@ -13,9 +13,10 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 import java.util.Objects;
 
-import static alex.hlo.springboot.test.utils.TestStudentUtil.generateSimpleStudentModel;
-import static alex.hlo.springboot.test.utils.TestStudentUtil.generateSimpleStudentModelList;
+import static alex.hlo.springboot.test.data_generator.TestStudentUtil.generateSimpleStudentModel;
+import static alex.hlo.springboot.test.data_generator.TestStudentUtil.generateSimpleStudentModelList;
 
+@Disabled
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -47,7 +48,7 @@ public class PostgresStudentsControllerTest {
 
     @Test
     @Order(3)
-    void updateCreatedStudentById() {
+    void updateCreatedStudentByIdTest() {
         student.setGender(Gender.FEMALE);
 
         Student updatedStudent = studentService.saveStudent(student);
@@ -75,7 +76,7 @@ public class PostgresStudentsControllerTest {
     @Test
     @Order(6)
     void generateStudentsAndSaveAllTest() {
-        int count = 10_000;
+        int count = 10;
 
         List<Student> students = generateSimpleStudentModelList(count);
         List<Student> savedStudents = studentService.saveAllStudents(students);

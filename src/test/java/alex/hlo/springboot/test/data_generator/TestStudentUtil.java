@@ -1,10 +1,11 @@
-package alex.hlo.springboot.test.utils;
+package alex.hlo.springboot.test.data_generator;
 
 import alex.hlo.springboot.test.entity.Semester;
 import alex.hlo.springboot.test.entity.Student;
 import alex.hlo.springboot.test.entity.Subject;
 import alex.hlo.springboot.test.model.enums.Gender;
 import alex.hlo.springboot.test.model.enums.SubjectGrade;
+import alex.hlo.springboot.test.utils.DateUtil;
 
 import java.util.*;
 

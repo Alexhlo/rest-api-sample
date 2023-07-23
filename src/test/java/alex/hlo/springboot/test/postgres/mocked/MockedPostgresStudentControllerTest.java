@@ -1,9 +1,9 @@
-package alex.hlo.springboot.test.postgres;
+package alex.hlo.springboot.test.postgres.mocked;
 
 import alex.hlo.springboot.test.entity.Student;
 import alex.hlo.springboot.test.exception.NotFoundException;
 import alex.hlo.springboot.test.service.student.StudentService;
-import alex.hlo.springboot.test.utils.TestStudentUtil;
+import alex.hlo.springboot.test.data_generator.TestStudentUtil;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 

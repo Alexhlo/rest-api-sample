@@ -1,6 +1,5 @@
-package alex.hlo.springboot.test;
+package alex.hlo.springboot.test.utils;
 
-import alex.hlo.springboot.test.utils.DateUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,22 +1,17 @@
 package alex.hlo.springboot.test.deserializer;
 
-import alex.hlo.springboot.test.exception.StudentServiceException;
 import alex.hlo.springboot.test.model.enums.Gender;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class GenderDeserializer extends StdDeserializer<Gender> {
-
-    public GenderDeserializer() {
-        super(GenderDeserializer.class);
-    }
+public class GenderDeserializer extends JsonDeserializer<Gender> {
 
     @Override
     public Gender deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -28,6 +23,6 @@ public class GenderDeserializer extends StdDeserializer<Gender> {
             }
         }
 
-        throw new StudentServiceException("Unexpected gender field value! Expected: " + Arrays.toString(Gender.values()));
+        throw JsonMappingException.from(jsonParser, "Unexpected gender field value! Expected: " + Arrays.toString(Gender.values()));
     }
 }

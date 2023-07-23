@@ -2,7 +2,7 @@ package alex.hlo.springboot.test.controller;
 
 import alex.hlo.springboot.test.entity.Student;
 import alex.hlo.springboot.test.model.ErrorMessage;
-import alex.hlo.springboot.test.service.StudentService;
+import alex.hlo.springboot.test.service.student.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

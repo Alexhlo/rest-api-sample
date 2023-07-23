@@ -1,25 +1,25 @@
 package alex.hlo.springboot.test.entity;
 
+import alex.hlo.springboot.test.entity.common.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
-@Data
+@Setter
+@Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "semesters")
 @Schema(name = "Semester", description = "Student semester list")
-public class Semester {
+public class Semester extends BaseEntity {
 
     @Id
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "semester_id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Schema(description = "Semester id", accessMode = READ_ONLY)
     private String id;

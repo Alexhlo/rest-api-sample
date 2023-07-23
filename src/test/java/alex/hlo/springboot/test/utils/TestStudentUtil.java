@@ -6,14 +6,24 @@ import alex.hlo.springboot.test.entity.Subject;
 import alex.hlo.springboot.test.model.enums.Gender;
 import alex.hlo.springboot.test.model.enums.SubjectGrade;
 
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 
 public final class TestStudentUtil {
 
     private TestStudentUtil() {}
+
+    public static List<Student> generateSimpleStudentModelList(long count) {
+        List<Student> list = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            list.add(generateSimpleStudentModel(i));
+        }
+
+        return list;
+    }
+
 
     public static Student generateSimpleStudentModel(long number) {
         return new Student(
@@ -28,17 +38,17 @@ public final class TestStudentUtil {
     }
 
     private static Set<Subject> initSubjects() {
-        return Set.of(
-                new Subject("History", getRandomGrade()),
-                new Subject("Math", getRandomGrade())
-        );
+        return new HashSet<>() {{
+            add(new Subject("History", getRandomGrade()));
+            add(new Subject("Math", getRandomGrade()));
+        }};
     }
 
     private static Set<Semester> initSemesters() {
-        return Set.of(
-                new Semester(1, true),
-                new Semester(2, false)
-        );
+        return new HashSet<>() {{
+            add(new Semester(1, true));
+            add(new Semester(2, false));
+        }};
     }
 
     private static SubjectGrade getRandomGrade() {

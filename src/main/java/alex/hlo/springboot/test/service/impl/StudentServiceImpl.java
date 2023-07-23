@@ -1,18 +1,20 @@
 package alex.hlo.springboot.test.service.impl;
 
 
+import alex.hlo.springboot.test.aspect.Benchmark;
+import alex.hlo.springboot.test.aspect.CheckId;
 import alex.hlo.springboot.test.entity.Semester;
 import alex.hlo.springboot.test.entity.Student;
 import alex.hlo.springboot.test.entity.Subject;
-import alex.hlo.springboot.test.exception.StudentApiException;
-import alex.hlo.springboot.test.exception.StudentNotFoundException;
-import alex.hlo.springboot.test.exception.StudentServiceException;
+import alex.hlo.springboot.test.exception.ApiException;
+import alex.hlo.springboot.test.exception.NotFoundException;
+import alex.hlo.springboot.test.exception.ServiceException;
 import alex.hlo.springboot.test.repository.StudentRepository;
-import alex.hlo.springboot.test.service.StudentService;
+import alex.hlo.springboot.test.service.student.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Field;
@@ -36,12 +38,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @CheckId(entityClass = Student.class)
     public Student getStudentById(String id) {
-        if (isEmpty(id)) throw new StudentApiException("Students id must not be blank!");
-
         Student student = studentRepository.findStudentById(id);
 
-        if (isNull(student)) throw new StudentNotFoundException("No student with id: " + id);
+        if (isNull(student)) throw new NotFoundException("No student with id: " + id);
 
         log.info("StudentService.getStudentById = " + student);
 
@@ -50,11 +51,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudentsById(List<String> ids) {
-        if (isEmpty(ids)) throw new StudentApiException("Students id list is empty.");
+        if (isEmpty(ids)) throw new ApiException("Students id list is empty.");
 
         List<Student> student = studentRepository.findAllById(ids);
 
-        if (isEmpty(student)) throw new StudentNotFoundException("No students with ids: " + ids);
+        if (isEmpty(student)) throw new NotFoundException("No students with ids: " + ids);
 
         log.info("StudentService.getStudentById = " + student);
 
@@ -63,11 +64,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudentsByLastName(String lastName) {
-        if (isEmpty(lastName)) throw new StudentApiException("Students must not be blank!");
+        if (isEmpty(lastName)) throw new ApiException("Students must not be blank!");
 
         List<Student> students = studentRepository.findAllByLastName(lastName);
 
-        if (isEmpty(students)) throw new StudentNotFoundException("No students with last name: " + lastName);
+        if (isEmpty(students)) throw new NotFoundException("No students with last name: " + lastName);
 
         log.info("StudentService.getStudentByLastName = " + students);
 
@@ -75,18 +76,19 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @Transactional(isolation =  Isolation.READ_COMMITTED)
+    @Benchmark
+    @Transactional
     public List<Student> getAllStudents() {
         List<Student> all = studentRepository.findAll();
 
-        if (isEmpty(all)) throw new StudentNotFoundException("Students not found!");
+        if (isEmpty(all)) throw new NotFoundException("Students not found!");
 
         return all;
     }
 
     @Override
     public Student saveStudent(Student student) {
-        if (isNull(student)) throw new StudentApiException("Student does not be null!");
+        if (isNull(student)) throw new ApiException("Student does not be null!");
 
         log.info("StudentService.saveStudent = " + student);
 
@@ -97,9 +99,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Benchmark
+    @Transactional
     public List<Student> saveAllStudents(List<Student> students) {
-        if (isEmpty(students)) throw new StudentApiException("Students does not exits!");
+        if (isEmpty(students)) throw new ApiException("Students does not exits!");
 
         log.info("StudentService.saveAllStudents = " + students);
 
@@ -108,13 +111,18 @@ public class StudentServiceImpl implements StudentService {
             fillStudentStudentAge(student);
         });
 
-        return studentRepository.saveAll(students);
+        List<Student> savedStudents = studentRepository.saveAll(students);
+
+        if(CollectionUtils.isEmpty(savedStudents)) {
+            throw new ServiceException("Students does not saved.");
+        }
+
+        return savedStudents;
     }
 
     @Override
+    @CheckId(entityClass = Student.class)
     public void deleteStudentById(String id) {
-        if (isEmpty(id)) throw new StudentApiException("Students id must not be blank!");
-
         log.info("StudentService.deleteStudentById = " + id);
 
         Student studentById = this.getStudentById(id);
@@ -123,6 +131,8 @@ public class StudentServiceImpl implements StudentService {
             studentRepository.deleteById(id);
         }
     }
+
+    ///TODO refactor validation
 
     private void validateStudent(Student student) {
         Set<String> nullableFields = Set.of("id", "middleName", "age");
@@ -137,12 +147,12 @@ public class StudentServiceImpl implements StudentService {
                     emptyFields.add(field.getName());
                 }
             } catch (IllegalAccessException e) {
-                throw new StudentServiceException("Can't get access to student field: " + field.getName());
+                throw new ServiceException("Can't get access to student field: " + field.getName());
             }
         }
 
         if (emptyFields.size() != 0) {
-            throw new StudentApiException("Student has no required fields: " + emptyFields);
+            throw new ApiException("Student has no required fields: " + emptyFields);
         }
 
         validateSemesters(student.getSemesters());
@@ -151,27 +161,27 @@ public class StudentServiceImpl implements StudentService {
 
     private void validateSemesters(Set<Semester> semesters) {
         if (ObjectUtils.isEmpty(semesters)) {
-            throw new StudentApiException("Student has no semesters!");
+            throw new ApiException("Student has no semesters!");
         }
 
         boolean isNullRequiredFields = semesters.stream()
                 .anyMatch(semester -> isEmpty(semester.getAccepted()) || isEmpty(semester.getCount()));
 
         if (isNullRequiredFields) {
-            throw new StudentApiException("Semester must contains fields: [accepted, count]");
+            throw new ApiException("Semester must contains fields: [accepted, count]");
         }
     }
 
     private void validateSubjects(Set<Subject> subjects) {
         if (ObjectUtils.isEmpty(subjects)) {
-            throw new StudentApiException("Student has no subjects!");
+            throw new ApiException("Student has no subjects!");
         }
 
         boolean isNullRequiredFields = subjects.stream()
                 .anyMatch(subject -> isEmpty(subject.getGrade()) || isEmpty(subject.getName()));
 
         if (isNullRequiredFields) {
-            throw new StudentApiException("Subject must contains fields: [grade, name]");
+            throw new ApiException("Subject must contains fields: [grade, name]");
         }
     }
 

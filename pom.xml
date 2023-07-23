@@ -15,8 +15,8 @@
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
 
         <!-- project dependencies -->
-        <lombok.version>1.18.24</lombok.version>
         <spring-boot.version>2.6.14</spring-boot.version>
+        <lombok.version>1.18.28</lombok.version>
         <postgresql.version>42.5.1</postgresql.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <spring-sleuth.version>3.1.7</spring-sleuth.version>

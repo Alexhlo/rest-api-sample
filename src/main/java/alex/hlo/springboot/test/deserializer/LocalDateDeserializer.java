@@ -1,23 +1,18 @@
 package alex.hlo.springboot.test.deserializer;
 
-import alex.hlo.springboot.test.exception.StudentServiceException;
 import alex.hlo.springboot.test.utils.DateUtil;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
-public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
-
-    public LocalDateDeserializer() {
-        super(LocalDateDeserializer.class);
-    }
+public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
 
     @Override
     public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -29,6 +24,6 @@ public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
             } catch (DateTimeParseException ignored) { }
         }
 
-        throw new StudentServiceException("Input date must be in pattern: yyyy-MM-dd");
+        throw JsonMappingException.from(jsonParser, "Input date must be in pattern: yyyy-MM-dd");
     }
 }

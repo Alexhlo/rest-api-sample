@@ -2,13 +2,12 @@ package alex.hlo.springboot.test.entity;
 
 import alex.hlo.springboot.test.deserializer.GenderDeserializer;
 import alex.hlo.springboot.test.deserializer.LocalDateDeserializer;
+import alex.hlo.springboot.test.entity.common.BaseEntity;
 import alex.hlo.springboot.test.generator.StudentIdGenerator;
 import alex.hlo.springboot.test.model.enums.Gender;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -17,16 +16,17 @@ import java.util.Set;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
-@Data
+@Setter
+@Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "students")
 @Schema(name = "Student", description = "Student subject list")
-public class Student {
+public class Student extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = StudentIdGenerator.NAME)
-    @Column(name = "student_id", nullable = false, unique = true)
     @Schema(description = "Student id", accessMode = READ_ONLY)
     @GenericGenerator(name = StudentIdGenerator.NAME, strategy = "alex.hlo.springboot.test.generator.StudentIdGenerator")
     private String id;
@@ -55,12 +55,12 @@ public class Student {
     private Integer age;
 
     @Schema(description = "Student subject list")
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
+    @JoinColumn(name = "student_id")
     @OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Subject> subjects;
 
     @Schema(description = "Student semester list")
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
+    @JoinColumn(name = "student_id")
     @OneToMany(targetEntity = Semester.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Semester> semesters;
 
@@ -72,7 +72,8 @@ public class Student {
         this.birthDate = birthDate;
     }
 
-    public Student(String firstName, String lastName, String middleName, Gender gender, LocalDate birthDate, Set<Subject> subjects, Set<Semester> semesters) {
+    public Student(String firstName, String lastName, String middleName, Gender gender, LocalDate birthDate,
+                   Set<Subject> subjects, Set<Semester> semesters) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;

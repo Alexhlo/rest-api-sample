@@ -1,8 +1,8 @@
 package alex.hlo.springboot.test.postgres;
 
 import alex.hlo.springboot.test.entity.Student;
-import alex.hlo.springboot.test.exception.StudentNotFoundException;
-import alex.hlo.springboot.test.service.StudentService;
+import alex.hlo.springboot.test.exception.NotFoundException;
+import alex.hlo.springboot.test.service.student.StudentService;
 import alex.hlo.springboot.test.utils.TestStudentUtil;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
@@ -53,7 +53,7 @@ public class MockedPostgresStudentControllerTest {
 
     @Test
     @Order(1)
-    void mockedSaveStudentAndCheckToDbTest() {
+    void mockedSaveStudentAndCheckInDbTest() {
         Student mockedSavedStudent = studentService.saveStudent(generatedStudent);
 
         Student mockedStudent= studentService.getStudentById(mockedSavedStudent.getId());
@@ -76,9 +76,9 @@ public class MockedPostgresStudentControllerTest {
 
         Mockito
                 .when(studentService.getStudentById(STUDENT_ID))
-                .thenThrow(StudentNotFoundException.class);
+                .thenThrow(NotFoundException.class);
 
-        Assertions.assertThrows(StudentNotFoundException.class,
+        Assertions.assertThrows(NotFoundException.class,
                 () -> studentService.getStudentById(STUDENT_ID));
     }
 

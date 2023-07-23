@@ -1,4 +1,4 @@
-package alex.hlo.springboot.test.service;
+package alex.hlo.springboot.test.service.student;
 
 import alex.hlo.springboot.test.entity.Student;
 

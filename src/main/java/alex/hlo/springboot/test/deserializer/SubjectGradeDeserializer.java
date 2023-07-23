@@ -1,22 +1,17 @@
 package alex.hlo.springboot.test.deserializer;
 
-import alex.hlo.springboot.test.exception.StudentServiceException;
 import alex.hlo.springboot.test.model.enums.SubjectGrade;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class SubjectGradeDeserializer extends StdDeserializer<SubjectGrade> {
-
-    public SubjectGradeDeserializer() {
-        super(SubjectGradeDeserializer.class);
-    }
+public class SubjectGradeDeserializer extends JsonDeserializer<SubjectGrade> {
 
     @Override
     public SubjectGrade deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -28,6 +23,6 @@ public class SubjectGradeDeserializer extends StdDeserializer<SubjectGrade> {
             }
         }
 
-        throw new StudentServiceException("Unexpected subject grade field value! Expected: " + Arrays.toString(SubjectGrade.values()));
+        throw JsonMappingException.from(jsonParser, "Unexpected subject grade field value! Expected: " + Arrays.toString(SubjectGrade.values()));
     }
 }

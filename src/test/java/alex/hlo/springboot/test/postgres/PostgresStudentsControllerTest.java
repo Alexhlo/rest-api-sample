@@ -1,18 +1,20 @@
 package alex.hlo.springboot.test.postgres;
 
 import alex.hlo.springboot.test.entity.Student;
-import alex.hlo.springboot.test.exception.StudentNotFoundException;
-import alex.hlo.springboot.test.service.StudentService;
+import alex.hlo.springboot.test.exception.NotFoundException;
+import alex.hlo.springboot.test.model.enums.Gender;
+import alex.hlo.springboot.test.service.student.StudentService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static alex.hlo.springboot.test.utils.TestStudentUtil.generateSimpleStudentModel;
+import static alex.hlo.springboot.test.utils.TestStudentUtil.generateSimpleStudentModelList;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -22,18 +24,40 @@ public class PostgresStudentsControllerTest {
     @Autowired
     private StudentService studentService;
 
+    private static String studentId;
+    private static Student student;
+
     @Test
     @Order(1)
-    void saveStudentAndCheckToDbTest() {
-        Student savedStudent = studentService.saveStudent(generateSimpleStudentModel(0));
+    void saveStudentAndCheckInDbTest() {
+        studentId = studentService
+                .saveStudent(generateSimpleStudentModel(0))
+                .getId();
 
-        Student student = studentService.getStudentById(savedStudent.getId());
-
-        Assertions.assertEquals(savedStudent, student);
+        Assertions.assertTrue(Objects.nonNull(studentId));
     }
 
     @Test
     @Order(2)
+    void getStudentByIdTest() {
+        student = studentService.getStudentById(studentId);
+
+        Assertions.assertTrue(Objects.nonNull(student));
+    }
+
+    @Test
+    @Order(3)
+    void updateCreatedStudentById() {
+        student.setGender(Gender.FEMALE);
+
+        Student updatedStudent = studentService.saveStudent(student);
+
+        Assertions.assertEquals(updatedStudent.getId(), student.getId());
+        Assertions.assertEquals(updatedStudent.getGender(), student.getGender());
+    }
+
+    @Test
+    @Order(4)
     void getStudentsByLastNameTest() {
         List<Student> students = studentService.getStudentsByLastName("LastName0");
 
@@ -41,33 +65,26 @@ public class PostgresStudentsControllerTest {
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void deleteStudentByIdTest() {
-        Student student = studentService.saveStudent(generateSimpleStudentModel(1));
+        studentService.deleteStudentById(studentId);
 
-        studentService.deleteStudentById(student.getId());
-
-        Assertions.assertThrows(StudentNotFoundException.class, () -> studentService.getStudentById(student.getId()));
+        Assertions.assertThrows(NotFoundException.class, () -> studentService.getStudentById(studentId));
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void generateStudentsAndSaveAllTest() {
-        List<Student> students = new ArrayList<>();
+        int count = 10_000;
 
-        int count = 10;
-
-        for (int i = 0; i < count; i++) {
-            students.add(generateSimpleStudentModel(i));
-        }
-
+        List<Student> students = generateSimpleStudentModelList(count);
         List<Student> savedStudents = studentService.saveAllStudents(students);
 
         Assertions.assertEquals(savedStudents.size(), count);
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void getAllStudentsTest() {
         List<Student> allStudents = studentService.getAllStudents();
 
@@ -75,7 +92,7 @@ public class PostgresStudentsControllerTest {
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     @Sql(scripts = "/sql/drop_all_tables.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void dropDbTablesTest() { }
 }

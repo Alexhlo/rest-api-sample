@@ -1,27 +1,27 @@
 package alex.hlo.springboot.test.entity;
 
+import alex.hlo.springboot.test.entity.common.BaseEntity;
 import alex.hlo.springboot.test.model.enums.SubjectGrade;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
-@Data
+@Setter
+@Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "subjects")
 @Schema(name = "Subject", description = "Student subject list")
-public class Subject {
+public class Subject extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "subject_id", nullable = false, unique = true)
     @Schema(description = "Subject id", accessMode = READ_ONLY)
-    private long id;
+    private Long id;
 
     @Schema(description = "Subject name")
     @Column(name="subject_name", length=50, nullable=false)
